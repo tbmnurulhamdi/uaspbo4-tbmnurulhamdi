@@ -16,7 +16,6 @@ class UserController extends Controller
             ->with('childrenCategories')
             ->get();
         return view('master.user', ['data_menu' => $categories]);
-        // return view('master.user');
     }
 
     public function list(Request $request)
@@ -35,7 +34,6 @@ class UserController extends Controller
             ->with('childrenCategories')
             ->get();
         return view('master.useradd', ['data_menu' => $categories]);
-        // return view('master.useradd');
     }
 
     public function simpan(Request $request)
@@ -46,7 +44,10 @@ class UserController extends Controller
         $user->uname = $request->txtuname;
         $user->upass = $request->txtupass;
         $user->save();
-        return view('master.user');
+        $categories = sysmenu::where('sysmenu_id', '=', '0')
+            ->with('childrenCategories')
+            ->get();
+        return view('master.user', ['data_menu' => $categories]);
     }
 
     public function edit(Request $request)
@@ -57,7 +58,6 @@ class UserController extends Controller
         $id = $request->id;
         $data = sysuser::where('id', $id)->first();
         return view('master.useredit', ['user' => $data, 'data_menu' => $categories]);
-        // return view('master.useredit', []);
     }
 
     public function update(Request $request)
@@ -71,6 +71,9 @@ class UserController extends Controller
                 'uname' => $request->txtuname,
                 'upass' => $request->txtupass,
             ]);
-        return view('master.user');
+        $categories = sysmenu::where('sysmenu_id', '=', '0')
+            ->with('childrenCategories')
+            ->get();
+        return view('master.user', ['data_menu' => $categories]);
     }
 }
